@@ -4,7 +4,7 @@ Cet site permet de collecter les informations nécessaires, de remplir la base d
 
 **lien ver webdev** <>
 
-**lien ver github** <>
+**lien ver github** <https://github.com/yzl-2022/582-41B-tp1.git>
 
 ***********************************
 
@@ -130,21 +130,19 @@ Utiliser Tinker pour générer des données de test:
 
 `php artisan tinker`
 
-`> \App\Models\Ville::factory()->times(5)->create();`
+`> \App\Models\Ville::factory()->times(15)->create();`
 
-Cette commande va créer 5 villes et les enregistrer dans la base de données. **Mais nous pouvons aussi créer les villes en même temps avec les étudiants.** Dans ce cas, nous n'avons pas besoin d'exécuter cette commande dans le terminal. 
+Cette commande va créer 15 villes et les enregistrer dans la base de données.
 
 ## 5. Saisie des Étudiants
 
 `php artisan make:factory EtudiantFactory --model=Etudiant`
 
-Cette commande va  créer un fichier: /database/factories/EtudiantFactory.php
+Cette commande va créer un fichier: /database/factories/EtudiantFactory.php
 
 #### Ajouter dans /database/factories/EtudiantFactory.php
 
 ```php
-use App\Models\Ville;
-...
 public function definition()
     {
         return [
@@ -153,7 +151,7 @@ public function definition()
             'telephone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,
             'date_de_naissance' => $this->faker->dateTimeBetween('-100 years', 'now')->format('Y-m-d'),
-            'ville_id' => Ville::factory()->create()->id
+            'ville_id' => $this->faker->numberBetween(1,15) //étant donné que nous avons déjà créé 15 villes
         ];
     }
 ```
@@ -162,15 +160,21 @@ Utiliser Tinker pour générer des données de test:
 
 `php artisan tinker`
 
-`> \App\Models\Etudiant::factory()->times(10)->create();`
+`> \App\Models\Etudiant::factory()->times(100)->create();`
 
-Cette commande va créer 10 villes et 10 étudiants et les enregistrer dans la base de données.
+Cette commande va créer 100 étudiants et les enregistrer dans la base de données.
 
 ## 6. Création des Contrôleurs
+
+`php artisan make:controller EtudiantController -m Etudiant`
+
+Cette commande va créer un fichier: /app/Http/Controllers/EtudiantController.php
 
 ``
 
 ## 7. Création du Layout
+
+
 
 ## 8. Conception Ergonomique
 
@@ -179,16 +183,18 @@ Cette commande va créer 10 villes et 10 étudiants et les enregistrer dans la b
 ## 9. Affichage de la Liste des Étudiants
 
 
+
 ## 10. Création d'un Nouvel Étudiant
+
+
 
 ## 11. Affichage d'un Étudiant Sélectionné
 
 
 ## 12. Mise à Jour d'un Étudiant
 
+
+
 ## 13. Suppression d'un Étudiant
 
-## 14. Publication sur GitHub
-
-## 15. Envoi du Projet
 
