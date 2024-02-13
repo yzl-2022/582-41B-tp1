@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Ville;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Etudiant>
@@ -22,7 +23,7 @@ class EtudiantFactory extends Factory
             'telephone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,
             'date_de_naissance' => $this->faker->dateTimeBetween('-100 years', 'now')->format('Y-m-d'),
-            'ville_id' => App\Models\Ville::factory()
+            'ville_id' => Ville::factory()->create()->id
         ];
     }
 }

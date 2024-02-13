@@ -100,14 +100,14 @@ public function up()
             $table->unsignedBigInteger('ville_id');
             $table->timestamps();
             //foreign-key
-            $table->foreign('ville_id')->reference('id')->on('villes')->onDelete('cascade');
+            $table->foreign('ville_id')->references('id')->on('villes')->onDelete('cascade');
         });
     }
 ```
 
 `php artisan migrate`
 
-Cette commande va créer les tables « villes » et « etudiants ».
+Cette commande va créer les tables « villes » et « etudiants ». **Attention:** Il faut créer la table « villes » avant de créer la table « etudiants » à cause de la clé étrangère.
 
 ## 4. Saisie des Villes
 
@@ -132,7 +132,7 @@ Utiliser Tinker pour générer des données de test:
 
 `> \App\Models\Ville::factory()->times(5)->create();`
 
-Cette commande va créer 5 villes et les enregistrer dans la base de données.
+Cette commande va créer 5 villes et les enregistrer dans la base de données. **Mais nous pouvons aussi créer les villes en même temps avec les étudiants.** Dans ce cas, nous n'avons pas besoin d'exécuter cette commande dans le terminal. 
 
 ## 5. Saisie des Étudiants
 
@@ -143,6 +143,8 @@ Cette commande va  créer un fichier: /database/factories/EtudiantFactory.php
 #### Ajouter dans /database/factories/EtudiantFactory.php
 
 ```php
+use App\Models\Ville;
+...
 public function definition()
     {
         return [
@@ -151,18 +153,18 @@ public function definition()
             'telephone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,
             'date_de_naissance' => $this->faker->dateTimeBetween('-100 years', 'now')->format('Y-m-d'),
-            'ville_id' => App\Models\Ville::factory()
+            'ville_id' => Ville::factory()->create()->id
         ];
     }
 ```
 
-Encore, utiliser Tinker pour générer des données de test: 
+Utiliser Tinker pour générer des données de test: 
 
 `php artisan tinker`
 
 `> \App\Models\Etudiant::factory()->times(10)->create();`
 
-Cette commande va créer 10 étudiants et les enregistrer dans la base de données.
+Cette commande va créer 10 villes et 10 étudiants et les enregistrer dans la base de données.
 
 ## 6. Création des Contrôleurs
 

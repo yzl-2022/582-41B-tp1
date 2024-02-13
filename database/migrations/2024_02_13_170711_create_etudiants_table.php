@@ -23,7 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ville_id');
             $table->timestamps();
             //foreign-key
-            $table->foreign('ville_id')->reference('id')->on('villes')->onDelete('cascade');
+            $table->foreign('ville_id')->references('id')->on('villes')->onDelete('cascade');
         });
     }
 
