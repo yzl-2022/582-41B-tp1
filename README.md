@@ -170,31 +170,163 @@ Cette commande va créer 100 étudiants et les enregistrer dans la base de donn�
 
 Cette commande va créer un fichier: /app/Http/Controllers/EtudiantController.php
 
-``
+Dans ce fichier, Laravel génère automatiquement 7 méthodes: 
+- index() -- pour lister tous les étudiants -- GET
+- create() -- pour afficher le formulaire d'ajouter un étudiant -- GET
+- store(Request $request) -- pour enregistrer un nouvel étudiant dans la base de données -- POST
+- show(Etudiant $etudiant) -- pour afficher un étudiant -- GET
+- edit(Etudiant $etudiant) -- pour afficher le formulaire de modifier un étudiant -- GET
+- update(Request $request, Etudiant $etudiant) -- pour mettre à jour l'étudiant modifié dans la base de données -- PUT
+- destroy(Etudiant $etudiant) -- pour supprimer un étudiant -- DELETE
 
 ## 7. Création du Layout
 
+J'ai utilisé [la documentation de Bootstrap](https://getbootstrap.com/docs/5.3/components/navbar/) comme référence. Certains extraits sont tirés de là et adaptés pour le site.
 
+- app.blade.php -- extraits répétitifs tels que la barre de menus, l'en-tête, le pied de page et l'importation de CSS et JS
+- welcome.blade.php -- page d'accueil avec description du site
+- index.blade.php -- 
+- show.blade.php
+- create.blade.php
+- edit.blade.php
 
 ## 8. Conception Ergonomique
 
-``
-
 ## 9. Affichage de la Liste des Étudiants
 
+Enregistrer la route dans /routes/web.php
 
+```php
+Route::get('/etudiants', [App\Http\Controllers\EtudiantController::class, 'index'])->name('etudiant.index');
+```
+
+Compléter la fonction **index** dans contrôleur
+
+```php
+public function index()
+{
+    $etudiants = Etudiant::all();
+    return view('etudiant.index',['etudiants'=>$etudiants]);
+}
+```
 
 ## 10. Création d'un Nouvel Étudiant
 
+Enregistrer la route dans /routes/web.php
 
+```php
+Route::get('/create/etudiant', [App\Http\Controllers\TaskController::class, 'create'])->name('etudiant.create');
+Route::post('/create/etudiant', [App\Http\Controllers\TaskController::class, 'store'])->name('etudiant.store');
+```
+
+Compléter les fonctions **create** et **store** dans contrôleur
+
+```php
+public function create()
+{
+    return view('etudiant.create');
+}
+```
+
+```php
+public function store(Request $request)
+{
+    $request->validate([
+        'nom'               => 'required|string|max:255',
+        'adresse'           => 'required|string',
+        'telephone'         => 'nullable|string',
+        'email'             => 'required|email',
+        'date_de_naissance' => 'required|date',
+    ]);
+
+    $etudiant = Etudiant::create([
+        'nom'               => $request->nom,
+        'adresse'           => $request->adresse,
+        'telephone'         => $request->telephone,
+        'email'             => $request->email,
+        'date_de_naissance' => $request->date_de_naissance,
+        'ville_id'          => rand(1,15)
+    ]);
+
+    return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Étudiant créé avec succès.');
+}
+```
 
 ## 11. Affichage d'un Étudiant Sélectionné
 
+Enregistrer la route dans /routes/web.php
+
+```php
+Route::get('/etudiant/{id}', [App\Http\Controllers\EtudiantController::class, 'show'])->where('id', '[0-9]+')->name('etudiant.show');
+```
+
+Compléter la fonction **show** dans contrôleur
+
+```php
+public function show(Etudiant $etudiant)
+{
+    return view('etudiant.show', ['etudiant'=>$etudiant]);
+}
+```
 
 ## 12. Mise à Jour d'un Étudiant
 
+Enregistrer la route dans /routes/web.php
 
+```php
+Route::get('/edit/etudiant/{id}', [App\Http\Controllers\TaskController::class, 'edit'])->where('id', '[0-9]+')->name('etudiant.edit');
+Route::put('/edit/etudiant/{id}', [App\Http\Controllers\TaskController::class, 'update'])->where('id', '[0-9]+')->name('etudiant.update');
+```
+
+Compléter les fonctions **edit** et **update** dans contrôleur
+
+```php
+public function edit(Etudiant $etudiant)
+{
+    return view('etudiant.edit', ['etudiant'=>$etudiant]);
+}
+```
+
+```php
+public function update(Request $request, Etudiant $etudiant)
+{
+    $request->validate([
+        'nom'               => 'required|string|max:255',
+        'adresse'           => 'required|string',
+        'telephone'         => 'nullable|string',
+        'email'             => 'required|email',
+        'date_de_naissance' => 'required|date',
+        'ville_id'          => 'required|numeric'
+    ]);
+
+    $etudiant->update([
+        'nom'               => $request->nom,
+        'adresse'           => $request->adresse,
+        'telephone'         => $request->telephone,
+        'email'             => $request->email,
+        'date_de_naissance' => $request->date_de_naissance,
+        'ville_id'          => $request->ville_id
+    ]);
+
+    return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Étudiant modifié avec succès.');
+}
+```
 
 ## 13. Suppression d'un Étudiant
 
+Enregistrer la route dans /routes/web.php
 
+```php
+Route::delete('/etudiant/{id}', [App\Http\Controllers\TaskController::class, 'destroy'])->where('id', '[0-9]+')->name('etudiant.delete');
+```
+
+Compléter la fonction **destroy** dans contrôleur
+
+```php
+public function destroy(Etudiant $etudiant)
+{
+    $etudiant->delete();
+
+    return redirect()->route('etudiant.index')->with('success', 'Étudiant supprimé avec succès.');
+}
+```
