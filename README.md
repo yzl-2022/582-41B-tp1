@@ -183,12 +183,12 @@ Dans ce fichier, Laravel génère automatiquement 7 méthodes:
 
 J'ai utilisé [la documentation de Bootstrap](https://getbootstrap.com/docs/5.3/components/navbar/) comme référence. Certains extraits sont tirés de là et adaptés pour le site.
 
-- app.blade.php -- extraits répétitifs tels que la barre de menus, l'en-tête, le pied de page et l'importation de CSS et JS
+- /layouts/app.blade.php -- extraits répétitifs tels que la barre de menus, l'en-tête, le pied de page et l'importation de CSS et JS
 - welcome.blade.php -- page d'accueil avec description du site
-- index.blade.php -- 
-- show.blade.php
-- create.blade.php
-- edit.blade.php
+- /etudiant/index.blade.php -- lister tous les étudiants et étudiantes
+- /etudiant/show.blade.php -- afficher les détails d'un étudiant
+- /etudiant/create.blade.php -- le formulaire d'ajouter un étudiant
+- /etudiant/edit.blade.php -- le formulaire de modifier un étudiant
 
 ## 8. Conception Ergonomique
 
