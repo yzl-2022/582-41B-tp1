@@ -14,7 +14,7 @@ class EtudiantController extends Controller
      */
     public function index()
     {
-        $etudiants = Etudiant::all();
+        $etudiants = Etudiant::join('villes', 'villes.id','=','ville_id')->select('etudiants.*', 'villes.nom as ville_nom')->get();
         return view('etudiant.index',['etudiants'=>$etudiants]);
     }
 
@@ -59,22 +59,29 @@ class EtudiantController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Etudiant  $etudiant
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function show(Etudiant $etudiant)
+    public function show($id) //why does show(Etudiant $etudiant) return undefined? but show($id) works.
     {
+        $etudiant = Etudiant::find($id);
+        //dd($etudiant);
+
+        // Eager load the 'ville' relationship
+        if($etudiant) $etudiant->load('ville');
+
         return view('etudiant.show', ['etudiant'=>$etudiant]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Etudiant  $etudiant
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(Etudiant $etudiant)
+    public function edit($id)
     {
+        $etudiant = Etudiant::find($id);
         return view('etudiant.edit', ['etudiant'=>$etudiant]);
     }
 

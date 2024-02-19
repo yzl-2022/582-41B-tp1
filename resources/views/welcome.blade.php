@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('title', 'Accueil')
 @section('content')
-<nav aria-label="breadcrumb">
+<nav class="mt-3" aria-label="breadcrumb">
   <ol class="breadcrumb">
     <li class="breadcrumb-item active" aria-current="page">Accueil</li>
   </ol>

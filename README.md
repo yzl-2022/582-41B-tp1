@@ -215,8 +215,8 @@ public function index()
 Enregistrer la route dans /routes/web.php
 
 ```php
-Route::get('/create/etudiant', [App\Http\Controllers\TaskController::class, 'create'])->name('etudiant.create');
-Route::post('/create/etudiant', [App\Http\Controllers\TaskController::class, 'store'])->name('etudiant.store');
+Route::get('/create/etudiant', [App\Http\Controllers\EtudiantController::class, 'create'])->name('etudiant.create');
+Route::post('/create/etudiant', [App\Http\Controllers\EtudiantController::class, 'store'])->name('etudiant.store');
 ```
 
 Compléter les fonctions **create** et **store** dans contrôleur
@@ -274,8 +274,8 @@ public function show(Etudiant $etudiant)
 Enregistrer la route dans /routes/web.php
 
 ```php
-Route::get('/edit/etudiant/{id}', [App\Http\Controllers\TaskController::class, 'edit'])->where('id', '[0-9]+')->name('etudiant.edit');
-Route::put('/edit/etudiant/{id}', [App\Http\Controllers\TaskController::class, 'update'])->where('id', '[0-9]+')->name('etudiant.update');
+Route::get('/edit/etudiant/{id}', [App\Http\Controllers\EtudiantController::class, 'edit'])->where('id', '[0-9]+')->name('etudiant.edit');
+Route::put('/edit/etudiant/{id}', [App\Http\Controllers\EtudiantController::class, 'update'])->where('id', '[0-9]+')->name('etudiant.update');
 ```
 
 Compléter les fonctions **edit** et **update** dans contrôleur
@@ -317,7 +317,7 @@ public function update(Request $request, Etudiant $etudiant)
 Enregistrer la route dans /routes/web.php
 
 ```php
-Route::delete('/etudiant/{id}', [App\Http\Controllers\TaskController::class, 'destroy'])->where('id', '[0-9]+')->name('etudiant.delete');
+Route::delete('/etudiant/{id}', [App\Http\Controllers\EtudiantController::class, 'destroy'])->where('id', '[0-9]+')->name('etudiant.delete');
 ```
 
 Compléter la fonction **destroy** dans contrôleur

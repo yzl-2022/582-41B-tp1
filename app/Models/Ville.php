@@ -12,4 +12,10 @@ class Ville extends Model
     protected $fillable = [
         'nom'
     ];
+
+    /* relationship with the table etudiants */
+    public function etudiants()
+    {
+        return $this->hasMany(Etudiant::class);
+    }
 }
