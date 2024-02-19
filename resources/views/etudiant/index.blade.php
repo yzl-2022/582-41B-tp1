@@ -21,7 +21,7 @@
                     <p class="card-text">{{ $etudiant->telephone }}</p>
                     <p class="card-text">{{ $etudiant->email }}</p>
                     <p class="card-text">{{ $etudiant->date_de_naissance }}</p>
-                    <p class="card-text"><strong>Ville: </strong>{{ $etudiant->ville_nom }}</p>
+                    <p class="card-text"><strong>Ville: </strong>{{ $etudiant->ville->nom }}</p>
                     <a href="{{ route('etudiant.show', $etudiant->id) }}" class="card-link">Voir plus</a>
                 </div>
             </div>

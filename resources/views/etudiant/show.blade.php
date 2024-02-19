@@ -11,8 +11,8 @@
 <section class="pb-4 text-center container">
     <h1>Étudiant</h1>
 </section>
-{{--show card--}}
 @isset($etudiant)
+{{--show card--}}
 <div class="row justify-content-center">
     <div class="col-md-8">
         <div class="card mb-5">

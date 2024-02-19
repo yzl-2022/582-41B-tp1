@@ -18,42 +18,64 @@
                 <form action="{{ route('etudiant.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
-                        @if ($errors->has('title'))
+                        <label for="nom" class="form-label">Nom</label>
+                        <input type="text" class="form-control" id="nom" name="nom" value="{{ old('nom') }}">
+                        @if ($errors->has('nom'))
                             <div class="text-danger mt-2">
-                                {{$errors->first('title')}}
+                                {{$errors->first('nom')}}
                             </div>
                         @endif
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" id="description" name="description" rows="3">{{ old('description') }}</textarea>
-                        @if ($errors->has('description'))
+                        <label for="adresse" class="form-label">Adresse</label>
+                        <input type="text" class="form-control" id="adresse" name="adresse" value="{{ old('adresse') }}">
+                        @if ($errors->has('adresse'))
                             <div class="text-danger mt-2">
-                                {{$errors->first('description')}}
+                                {{$errors->first('adresse')}}
                             </div>
                         @endif
                     </div>
                     <div class="mb-3">
-                        <label for="completed" class="form-check-label">Completed</label>
-                        <input type="checkbox" class="form-check-input" id="completed" name="completed" value="1" {{ old('completed') ? 'checked' : ''}}>
-                        @if ($errors->has('completed'))
+                        <label for="telephone" class="form-label">Téléphone</label>
+                        <input type="tel" class="form-control" id="telephone" name="telephone" value="{{ old('telephone') }}">
+                        @if ($errors->has('telephone'))
                             <div class="text-danger mt-2">
-                                {{$errors->first('completed')}}
+                                {{$errors->first('telephone')}}
                             </div>
                         @endif
                     </div>
                     <div class="mb-3">
-                        <label for="due_date" class="form-label">Due Date</label>
-                        <input type="date" class="form-control" id="due_date" name="due_date" value="{{ old('due_date') }}">
-                        @if ($errors->has('due_date'))
+                        <label for="email" class="form-label">Courriel</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ old('email') }}">
+                        @if ($errors->has('email'))
                             <div class="text-danger mt-2">
-                                {{$errors->first('due_date')}}
+                                {{$errors->first('email')}}
                             </div>
                         @endif
                     </div>
-                    <button type="submit" class="btn btn-primary">Save</button>
+                    <div class="mb-3">
+                        <label for="date_de_naissance" class="form-label">DateDate de naissance</label>
+                        <input type="date" class="form-control" id="date_de_naissance" name="date_de_naissance" value="{{ old('date_de_naissance') }}" min="1923-01-01" max="2023-12-31">
+                        @if ($errors->has('date_de_naissance'))
+                            <div class="text-danger mt-2">
+                                {{$errors->first('date_de_naissance')}}
+                            </div>
+                        @endif
+                    </div>
+                    <div class="mb-3">
+                        <label for="ville_id" class="form-label">Ville</label>
+                        <select class="form-select" name="ville_id" id="ville_id">
+                          @foreach($villes as $ville)
+                          <option value="{{ $ville->id }}" {{ old('ville_id') == $ville->id ? 'selected' : '' }}>{{ $ville->nom }}</option>
+                          @endforeach
+                        </select>
+                        @if ($errors->has('ville_id'))
+                            <div class="text-danger mt-2">
+                                {{$errors->first('ville_id')}}
+                            </div>
+                        @endif
+                    </div>
+                    <button type="submit" class="btn btn-primary">Ajouter</button>
                 </form>
             </div>
         </div>

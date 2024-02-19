@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
+use App\Models\Ville;
 use Illuminate\Http\Request;
 
 class EtudiantController extends Controller
@@ -14,8 +15,8 @@ class EtudiantController extends Controller
      */
     public function index()
     {
-        $etudiants = Etudiant::join('villes', 'villes.id','=','ville_id')->select('etudiants.*', 'villes.nom as ville_nom')->get();
-        return view('etudiant.index',['etudiants'=>$etudiants]);
+        $etudiants = Etudiant::all();
+        return view('etudiant.index', ['etudiants'=>$etudiants]);
     }
 
     /**
@@ -25,7 +26,10 @@ class EtudiantController extends Controller
      */
     public function create()
     {
-        return view('etudiant.create');
+        $villes = Ville::all();
+        //dd($villes);
+
+        return view('etudiant.create', ['villes'=>$villes]);
     }
 
     /**
@@ -50,7 +54,7 @@ class EtudiantController extends Controller
             'telephone'         => $request->telephone,
             'email'             => $request->email,
             'date_de_naissance' => $request->date_de_naissance,
-            'ville_id'          => rand(1,15)
+            'ville_id'          => $request->ville_id
         ]);
 
         return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Étudiant créé avec succès.');
@@ -67,9 +71,6 @@ class EtudiantController extends Controller
         $etudiant = Etudiant::find($id);
         //dd($etudiant);
 
-        // Eager load the 'ville' relationship
-        if($etudiant) $etudiant->load('ville');
-
         return view('etudiant.show', ['etudiant'=>$etudiant]);
     }
 
@@ -81,18 +82,19 @@ class EtudiantController extends Controller
      */
     public function edit($id)
     {
+        $villes = Ville::all();
         $etudiant = Etudiant::find($id);
-        return view('etudiant.edit', ['etudiant'=>$etudiant]);
+        return view('etudiant.edit', ['etudiant'=>$etudiant, 'villes'=>$villes]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Etudiant  $etudiant
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Etudiant $etudiant)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'nom'               => 'required|string|max:255',
@@ -103,28 +105,38 @@ class EtudiantController extends Controller
             'ville_id'          => 'required|numeric'
         ]);
 
-        $etudiant->update([
-            'nom'               => $request->nom,
-            'adresse'           => $request->adresse,
-            'telephone'         => $request->telephone,
-            'email'             => $request->email,
-            'date_de_naissance' => $request->date_de_naissance,
-            'ville_id'          => $request->ville_id
-        ]);
+        $etudiant = Etudiant::find($id);
 
-        return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Étudiant modifié avec succès.');
+        if($etudiant){
+            $etudiant->update([
+                'nom'               => $request->nom,
+                'adresse'           => $request->adresse,
+                'telephone'         => $request->telephone,
+                'email'             => $request->email,
+                'date_de_naissance' => $request->date_de_naissance,
+                'ville_id'          => $request->ville_id
+            ]);
+
+            return redirect()->route('etudiant.show', $id)->with('success', 'Étudiant modifié avec succès.');
+        }else{
+            return redirect()->route('etudiant.show', $id);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Etudiant  $etudiant
+     * @param  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Etudiant $etudiant)
+    public function destroy($id)
     {
-        $etudiant->delete();
-
-        return redirect()->route('etudiant.index')->with('success', 'Étudiant supprimé avec succès.');
+        $etudiant = Etudiant::find($id);
+        if($etudiant){
+            $etudiant->delete();
+            return redirect()->route('etudiant.index')->with('success', 'Étudiant supprimé avec succès.');
+        }else{
+            return redirect()->route('etudiant.show', $id);
+        }
     }
 }

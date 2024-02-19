@@ -30,6 +30,11 @@ class Ville extends Model
     protected $fillable = [
         'nom'
     ];
+    /* relation avec la table 'etudiants' */
+    public function etudiants()
+    {
+        return $this->hasMany(Etudiant::class);
+    }
 }
 ```
 
@@ -52,6 +57,10 @@ class Etudiant extends Model
         'date_de_naissance',
         'ville_id'
     ];
+    /* relation avec la table 'villes' */
+    public function ville(){
+        return $this->belongsTo(Ville::class);
+    }
 }
 ```
 
@@ -222,9 +231,12 @@ Route::post('/create/etudiant', [App\Http\Controllers\EtudiantController::class,
 Compléter les fonctions **create** et **store** dans contrôleur
 
 ```php
+use App\Models\Ville;
+...
 public function create()
 {
-    return view('etudiant.create');
+    $villes = Ville::all();
+    return view('etudiant.create', ['villes'=>$villes]);
 }
 ```
 
@@ -245,7 +257,7 @@ public function store(Request $request)
         'telephone'         => $request->telephone,
         'email'             => $request->email,
         'date_de_naissance' => $request->date_de_naissance,
-        'ville_id'          => rand(1,15)
+        'ville_id'          => $request->ville_id
     ]);
 
     return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Étudiant créé avec succès.');
@@ -263,8 +275,9 @@ Route::get('/etudiant/{id}', [App\Http\Controllers\EtudiantController::class, 's
 Compléter la fonction **show** dans contrôleur
 
 ```php
-public function show(Etudiant $etudiant)
+public function show($id)
 {
+    $etudiant = Etudiant::find($id);
     return view('etudiant.show', ['etudiant'=>$etudiant]);
 }
 ```
@@ -281,14 +294,16 @@ Route::put('/edit/etudiant/{id}', [App\Http\Controllers\EtudiantController::clas
 Compléter les fonctions **edit** et **update** dans contrôleur
 
 ```php
-public function edit(Etudiant $etudiant)
+public function edit($id)
 {
-    return view('etudiant.edit', ['etudiant'=>$etudiant]);
+    $villes = Ville::all();
+    $etudiant = Etudiant::find($id);
+    return view('etudiant.edit', ['etudiant'=>$etudiant, 'villes'=>$villes]);
 }
 ```
 
 ```php
-public function update(Request $request, Etudiant $etudiant)
+public function update(Request $request, $id)
 {
     $request->validate([
         'nom'               => 'required|string|max:255',
@@ -299,16 +314,22 @@ public function update(Request $request, Etudiant $etudiant)
         'ville_id'          => 'required|numeric'
     ]);
 
-    $etudiant->update([
-        'nom'               => $request->nom,
-        'adresse'           => $request->adresse,
-        'telephone'         => $request->telephone,
-        'email'             => $request->email,
-        'date_de_naissance' => $request->date_de_naissance,
-        'ville_id'          => $request->ville_id
-    ]);
+    $etudiant = Etudiant::find($id);
 
-    return redirect()->route('etudiant.show', $etudiant->id)->with('success', 'Étudiant modifié avec succès.');
+    if($etudiant){
+        $etudiant->update([
+            'nom'               => $request->nom,
+            'adresse'           => $request->adresse,
+            'telephone'         => $request->telephone,
+            'email'             => $request->email,
+            'date_de_naissance' => $request->date_de_naissance,
+            'ville_id'          => $request->ville_id
+        ]);
+
+        return redirect()->route('etudiant.show', $id)->with('success', 'Étudiant modifié avec succès.');
+    }else{
+        return redirect()->route('etudiant.show', $id);
+    }
 }
 ```
 
@@ -323,10 +344,14 @@ Route::delete('/etudiant/{id}', [App\Http\Controllers\EtudiantController::class,
 Compléter la fonction **destroy** dans contrôleur
 
 ```php
-public function destroy(Etudiant $etudiant)
+public function destroy($id)
 {
-    $etudiant->delete();
-
-    return redirect()->route('etudiant.index')->with('success', 'Étudiant supprimé avec succès.');
+    $etudiant = Etudiant::find($id);
+    if($etudiant){
+        $etudiant->delete();
+        return redirect()->route('etudiant.index')->with('success', 'Étudiant supprimé avec succès.');
+    }else{
+        return redirect()->route('etudiant.show', $id);
+    }
 }
 ```
