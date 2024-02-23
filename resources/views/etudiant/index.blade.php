@@ -3,7 +3,7 @@
 @section('content')
 <nav class="mt-3" aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/">Accueil</a></li>
+    <li class="breadcrumb-item"><a href="{{ asset('/') }}">Accueil</a></li>
     <li class="breadcrumb-item active" aria-current="page">Étudiants</li>
   </ol>
 </nav>

@@ -2,7 +2,7 @@
 
 Cet site permet de collecter les informations nécessaires, de remplir la base de données avec des données aléatoires, et de créer des interfaces fonctionnelles permettant de visualiser, saisir, mettre à jour et supprimer les informations des étudiants.
 
-**lien ver webdev** <>
+**lien ver webdev** <https://e2296635.webdev.cmaisonneuve.qc.ca/cardTP1/>
 
 **lien ver github** <https://github.com/yzl-2022/582-41B-tp1.git>
 
