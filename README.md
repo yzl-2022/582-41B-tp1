@@ -249,6 +249,7 @@ public function store(Request $request)
         'telephone'         => 'nullable|string',
         'email'             => 'required|email',
         'date_de_naissance' => 'required|date',
+        'ville_id'          => 'required|numeric'
     ]);
 
     $etudiant = Etudiant::create([
