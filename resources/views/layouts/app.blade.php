@@ -20,13 +20,13 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="{{ asset('/') }}">Accueil</a>
+                    <a class="nav-link {{ $__env->yieldContent('title') == 'Accueil' ? 'active' : '' }}" aria-current="page" href="{{ asset('/') }}">Accueil</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link active" href="{{ route('etudiant.index') }}">Étudiants</a>
+                    <a class="nav-link {{ $__env->yieldContent('title') == 'Étudiants' ? 'active' : '' }}" href="{{ route('etudiant.index') }}">Étudiants</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="{{ route('etudiant.create') }}">Ajouter étudiant</a>
+                    <a class="nav-link {{ $__env->yieldContent('title') == 'Ajouter étudiant' ? 'active' : '' }}" href="{{ route('etudiant.create') }}">Ajouter étudiant</a>
                     </li>
                     <li class="nav-item">
                     <a class="nav-link disabled" aria-disabled="true">Se connecter</a>
