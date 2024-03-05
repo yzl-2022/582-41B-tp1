@@ -17,7 +17,7 @@ class VilleFactory extends Factory
     public function definition()
     {
         return [
-            'nom' => $this->faker->word
+            'nom' => $this->faker->city
         ];
     }
 }
