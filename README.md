@@ -130,7 +130,7 @@ Cette commande va créer un fichier: /database/factories/VilleFactory.php
 public function definition()
     {
         return [
-            'nom' => $this->faker->word
+            'nom' => $this->faker->city
         ];
     }
 ```
@@ -160,7 +160,7 @@ public function definition()
             'telephone' => $this->faker->phoneNumber,
             'email' => $this->faker->email,
             'date_de_naissance' => $this->faker->dateTimeBetween('-100 years', 'now')->format('Y-m-d'),
-            'ville_id' => $this->faker->numberBetween(1,15) //étant donné que nous avons déjà créé 15 villes
+            'ville_id' => Ville::all()->random()->id
         ];
     }
 ```
